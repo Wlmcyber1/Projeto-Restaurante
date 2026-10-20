@@ -1,7 +1,5 @@
 # 🍝 Pastaria Totem — Autoatendimento
 
-## 👥 Integrantes
-* **Seu Nome Completo** - Matrícula (Seu Curso/Turma)
 
 ## 📌 Descrição do Projeto e Público-Alvo
 O **Pastaria Totem** é um protótipo funcional de aplicativo Android desenvolvido em **Kotlin** e **Jetpack Compose** para a disciplina de Desenvolvimento para Dispositivos Móveis. 
