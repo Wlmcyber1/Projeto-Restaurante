@@ -21,26 +21,6 @@ O projeto simula um terminal de autoatendimento (estilo totem de fast-food) para
 * [ ] **Tela de Detalhes do Prato:** Customização de quantidade e botão para despacho do pedido *(Em desenvolvimento)*.
 * [ ] **Simulação de Estados da Cozinha:** Fluxo visual utilizando Coroutines do Kotlin para demonstrar o andamento do prato na cozinha *(Em desenvolvimento)*.
 
-## 📁 Organização Estrutural do Projeto (Front-End)
-```text
-com.cantina.totem/
-│
-├── data/
-│   └── model/          # Modelos de dados para o JSON (Data Classes)
-│
-├── navigation/
-│   ├── Routes.kt       # Arquivo centralizador das constantes de rotas
-│   └── TotemNavGraph.kt # Configuração do NavHost e fluxo de telas
-│
-├── network/            # Configuração do Retrofit e Interfaces de Serviço
-│
-└── ui/
-    ├── screens/
-    │   ├── WelcomeScreen.kt # Código da interface da tela de Boas-Vindas
-    │   ├── MenuScreen.kt    # Interface do cardápio principal
-    │   └── DetailScreen.kt  # Interface de detalhes e estados da cozinha
-    └── theme/          # Definições de cores (Creme, Verde-Oliva) e tipografia
-```
 
 ## 🔧 Instruções para Execução
 1. Realize o clone deste repositório.
