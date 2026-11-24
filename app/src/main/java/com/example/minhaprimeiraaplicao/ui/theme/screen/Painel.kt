@@ -1,6 +1,9 @@
 package com.example.minhaprimeiraaplicao.ui.theme.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,7 +55,7 @@ private val TerracotaClara = Color(0xFFE3A07F)
 @Composable
 fun Painel(
     viewModel: PainelProdutoViewModel = viewModel(),
-    onEscolherProduto: (Int) -> Unit
+    onVerPedido: () -> Unit
 ) {
     // Busca os produtos assim que a tela abre
     LaunchedEffect(Unit) {
@@ -59,6 +64,7 @@ fun Painel(
 
     // Lê a lista guardada no ViewModel
     val produtos = viewModel.listaProdutos
+    val quantidadeNoCarrinho = viewModel.carrinho.sumOf { it.quantidade }
 
     Box(
         modifier = Modifier
@@ -99,7 +105,7 @@ fun Painel(
 
             if (produtos.isEmpty()) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -116,16 +122,41 @@ fun Painel(
             } else {
                 // items() percorre a lista de produtos e desenha um card para cada um
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(bottom = 16.dp)
                 ) {
                     items(produtos, key = { it.id }) { produto ->
                         CardProduto(
                             produto = produto,
-                            onClick = { onEscolherProduto(produto.id.toInt()) }
+                            quantidade = viewModel.quantidadeDe(produto),
+                            onAdicionar = { viewModel.adicionarAoCarrinho(produto) },
+                            onRemover = { viewModel.removerDoCarrinho(produto) }
                         )
                     }
+                }
+            }
+
+            if (quantidadeNoCarrinho > 0) {
+                Spacer(Modifier.height(16.dp))
+                Button(
+                    onClick = onVerPedido,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    shape = RoundedCornerShape(28.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = VerdeOliva,
+                        contentColor = Creme
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
+                ) {
+                    Text(
+                        text = "Ver pedido ($quantidadeNoCarrinho)",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 24.sp
+                    )
                 }
             }
         }
@@ -133,11 +164,16 @@ fun Painel(
 }
 
 @Composable
-private fun CardProduto(produto: Produto, onClick: () -> Unit) {
+private fun CardProduto(
+    produto: Produto,
+    quantidade: Int,
+    onAdicionar: () -> Unit,
+    onRemover: () -> Unit
+) {
     val url = RetrofitInstancia.base_URL
    val imagens = produto.imagemUrl
+    // Sem onClick: o card não é mais clicável, só os botões + e -
     Card(
-        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -190,15 +226,57 @@ private fun CardProduto(produto: Produto, onClick: () -> Unit) {
                     )
                 }
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    text = "R$ %.2f".format(produto.preco).replace('.', ','),
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
-                    color = Terracota
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "R$ %.2f".format(produto.preco).replace('.', ','),
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp,
+                        color = Terracota,
+                        modifier = Modifier.weight(1f)
+                    )
+                    BotaoQuantidade(
+                        simbolo = "−",
+                        habilitado = quantidade > 0,
+                        onClick = onRemover
+                    )
+                    Text(
+                        text = "$quantidade",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = VerdeOliva,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.width(36.dp)
+                    )
+                    BotaoQuantidade(
+                        simbolo = "+",
+                        habilitado = true,
+                        onClick = onAdicionar
+                    )
+                }
             }
         }
+    }
+}
+
+// Botão redondo verde; fica apagado quando não pode ser usado (ex: "−" com 0 itens)
+@Composable
+private fun BotaoQuantidade(simbolo: String, habilitado: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .background(if (habilitado) VerdeOliva else VerdeOliva.copy(alpha = 0.2f))
+            .clickable(enabled = habilitado, onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = simbolo,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = Creme
+        )
     }
 }
 

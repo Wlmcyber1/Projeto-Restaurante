@@ -146,19 +146,13 @@ fun Inicio(onIrParaPainel: () -> Unit) {
                 ),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
             ) {
-                Button(onClick = onIrParaPainel) {
-                    Text(
-                        text = "Toque para Iniciar",
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 28.sp,
-                        letterSpacing = 1.sp
-
-                    )
-                }
-
-
-
+                Text(
+                    text = "Toque para Iniciar",
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 28.sp,
+                    letterSpacing = 1.sp
+                )
             }
 
             Spacer(Modifier.height(16.dp))
