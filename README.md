@@ -1,4 +1,4 @@
-# 🍝 Pastaria Totem — Autoatendimento
+# 🍝 Pastaria — Autoatendimento via app
 
 
 ## 📌 Descrição do Projeto e Público-Alvo
