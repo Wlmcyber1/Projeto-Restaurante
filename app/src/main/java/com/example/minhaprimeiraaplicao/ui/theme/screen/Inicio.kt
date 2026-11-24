@@ -1,4 +1,4 @@
-package com.example.minhaprimeiraaplicao.ui.theme
+package com.example.minhaprimeiraaplicao.ui.theme.screen
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode

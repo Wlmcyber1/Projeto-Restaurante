@@ -53,4 +53,14 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation("androidx.navigation:navigation-compose:2.8.5")
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+// Retrofit with Scalar Converter
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+// Retrofit com Gson (converte JSON em objeto Kotlin)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+// ViewModel no Compose (dá a função viewModel() pra usar na tela)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+// Coil: carrega imagem a partir de uma URL (as fotos do back)
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }
