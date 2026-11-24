@@ -26,14 +26,15 @@ fun App() {
         composable(Routes.PAINEL) {
             Painel(
                 viewModel = painelViewModel,
-                onEscolherProduto = { id -> }
+                onVerPedido = { navController.navigate(Routes.CARRINHO) }
             )
         }
         composable(Routes.CARRINHO) {
             Carrinho(
-                itens = emptyList(), // Parte 3: virá do painelViewModel
+                itens = painelViewModel.carrinho,
                 onVoltar = { navController.popBackStack() },
                 onEnviarParaCozinha = {
+                    painelViewModel.limparCarrinho()
                     navController.navigate(Routes.INICIO) {
                         popUpTo(Routes.INICIO) { inclusive = true }
                     }
